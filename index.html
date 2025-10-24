@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dora la Modificadora</title>
+</head>
+<body>
+    <h1>Modificación de etiquetas ZPL</h1>
+    <h2>1. Descargar plantilla de Excel</h2>
+    <p>Completar las columnas de los datos que se deseen modificar y el resto dejarlas en blanco.</p>
+    <p><b>IMPORTANTE: </b>La columna <b>CODBAR</b> no puede estar vacía.</p>
+    <p><b>ATENCIÓN: </b>NO ELIMINAR LAS COLUMNAS VACIAS.</p>
+    <form action="descargar.php" method="post">
+        <button type="submit">Descargar plantilla</button>
+    </form><br>
+
+    <h2>2. Subir Archivos</h2>
+    <form action="procesar.php" method="post" enctype="multipart/form-data">
+        <label for="archivo_excel">Archivo Excel:</label>
+        <input type="file" name="archivo_excel" required><br><br>
+        
+        <label for="codigo_zpl">Archivo ZPL:</label>
+        <input type="file" name="codigo_zpl" required><br><br>
+        
+        <input type="submit" value="Subir y Procesar">
+    </form><br>
+
+    <h2>3. Imprimir etiquetas</h2>
+    <form action="imprimir.php" method="post">
+        <label for="printerIP">IP de la impresora</label>
+        <input type="text" name="printerIP" id="printerIP" value="10.0.33.17" required><br><br>
+        
+        <input type="submit" value="Imprimir etiquetas">
+    </form>
+
+    <p>dejo en la carpeta uploads cargadas las que faltan imprimir de cubetas chicas lateral</p>
+
+</body>
+</html>
+
+<!-- HABILITAR EXTENSIONES ZIP Y SOCKET EN PHP.INI -->
