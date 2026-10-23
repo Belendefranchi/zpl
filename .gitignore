@@ -1,1 +1,4 @@
 /uploads/
+/legacy/uploads/
+/historial/*.json
+/historial/*.log

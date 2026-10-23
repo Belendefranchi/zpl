@@ -1,0 +1,25 @@
+﻿^XA
+-------- TEXTO NUMERICO --------
+
+^FT20,50
+^A0N,40,50
+^FD[ALTERNATIVO]^FS
+
+^FB520,4,1,L,1
+^FT20,310
+^A0N,40,40
+^FD[DESCRIPCION]^FS
+
+
+-------- BARCODE INTERLEAVED 2/5 --------
+^FT20,140
+^BY2,2,70
+
+^BCN,70,N,N,N
+^FD[BARRAS]^FS
+
+
+
+^PQ1
+
+^XZ

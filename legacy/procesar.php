@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $reader->close();
 
     // Variables a reemplazar en el código ZPL
-    $variables = ['[socio]', '[nombre]', '[localidad]', '[codbar]', '[tipo]'];
+    $variables = [/* '[socio]', '[tipo]', '[codbar]', '[nombre]', '[localidad]',  */'[CODBAR]', '[CODIGO]', '[DIN1]', '[DIN2]', '[DIN3]', '[DIN4]'];
 
     // Leer código ZPL base
     $codigo_zpl_base = file_get_contents($zpl_file);
@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Nombre del archivo .txt será igual a [CODBAR]
-        $codBar = $data[array_search('[codbar]', $variables)];
+        $codBar = $data[array_search('[CODBAR]', $variables)];
         $archivo_modificado = $target_dir . $codBar . ".txt";
         file_put_contents($archivo_modificado, $codigo_zpl_modificado);
         $codigos_zpl_modificados[] = $archivo_modificado;

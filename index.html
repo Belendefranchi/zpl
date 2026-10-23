@@ -1,40 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dora la Modificadora</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dora · Etiquetas ZPL</title><link rel="icon" type="image/png" href="favicon.png?v=1"><link rel="stylesheet" href="app.css"><script src="app.js" defer></script><script src="historial.js" defer></script><script src="texto.js" defer></script>
 </head>
-<body>
-    <h1>Modificación de etiquetas ZPL</h1>
-    <h2>1. Descargar plantilla de Excel</h2>
-    <p>Completar las columnas de los datos que se deseen modificar y el resto dejarlas en blanco.</p>
-    <p><b>IMPORTANTE: </b>La columna <b>CODBAR</b> no puede estar vacía.</p>
-    <p><b>ATENCIÓN: </b>NO ELIMINAR LAS COLUMNAS VACIAS.</p>
-    <form action="descargar.php" method="post">
-        <button type="submit">Descargar plantilla</button>
-    </form><br>
-
-    <h2>2. Subir Archivos</h2>
-    <form action="procesar.php" method="post" enctype="multipart/form-data">
-        <label for="archivo_excel">Archivo Excel:</label>
-        <input type="file" name="archivo_excel" required><br><br>
-        
-        <label for="codigo_zpl">Archivo ZPL:</label>
-        <input type="file" name="codigo_zpl" required><br><br>
-        
-        <input type="submit" value="Subir y Procesar">
-    </form><br>
-
-    <h2>3. Imprimir etiquetas</h2>
-    <form action="imprimir.php" method="post">
-        <label for="printerIP">IP de la impresora</label>
-        <input type="text" name="printerIP" id="printerIP" value="10.0.33.17" required><br><br>
-        
-        <input type="submit" value="Imprimir etiquetas">
-    </form>
-
-</body>
-</html>
-
-<!-- HABILITAR EXTENSIONES ZIP Y SOCKET EN PHP.INI -->
+<body><main>
+<header class="brand-header"><img class="brand-mascot" src="favicon.png" alt="Dora con su impresora de etiquetas" width="112" height="112"><div><span class="eyebrow">DORA · LA ETIQUETADORA</span><h1>Tus etiquetas, listas para imprimir</h1><p>Elegí un diseño, pegá la información y generá tus etiquetas.</p></div></header>
+<section class="card"><h2>1. Elegí la etiqueta</h2><label for="plantilla">Diseño disponible</label><select id="plantilla"><option>Cargando diseños…</option></select><p class="hint">Las columnas se adaptan automáticamente a las variables del diseño elegido.</p></section>
+<section class="card"><h2>2. Completá la planilla</h2><p class="hint">Copiá las celdas de Excel o Google Sheets, sin encabezados, y pegalas en la primera celda correspondiente. Se conservan los ceros iniciales y las columnas vacías.</p><div id="texto-panel" hidden><label for="texto-entrada">Completar desde texto · Más Farmacias</label><p class="hint">Pegá los socios con razón social, dirección y localidad. Se preparan dos registros por socio: MF y BF.</p><textarea id="texto-entrada" rows="6" placeholder="Socio L1467, Razon Social: SCHOENFELD MELISA, Direccion: SAAVEDRA 460 - BERUTTI, Localidad: BERUTI (6424)" style="width:100%;font:inherit;padding:12px;border:1px solid #c9d5df;border-radius:7px"></textarea><div class="actions" style="margin:12px 0"><button id="texto-analizar" type="button">Analizar texto</button><button id="texto-aplicar" type="button" disabled>Agregar a la planilla</button></div><p id="texto-status" class="hint" role="status" aria-live="polite"></p><div id="texto-preview" class="table-wrap" style="margin-bottom:16px"></div></div><div class="toolbar"><button id="agregar" type="button">+ Agregar fila</button><button id="limpiar" type="button">Limpiar planilla</button><span id="cantidad">0 filas con datos</span></div><div class="table-wrap"><table aria-label="Datos de las etiquetas"><thead><tr id="cabecera"></tr></thead><tbody id="filas"></tbody></table></div></section>
+<section class="card"><h2>3. Generá o imprimí</h2><div class="actions"><button class="primary submit" id="descargar" type="button">Descargar ZIP</button><label for="ip">Impresora</label><select id="ip" style="width:auto;margin-top:0"><option value="10.0.112.25">Sistemas</option><option value="10.0.112.48">Planificación</option><option value="127.0.0.1">Virtual</option></select><button class="submit" id="imprimir" type="button">Enviar a impresora</button></div><div class="actions" style="margin-top:16px"><label for="tanda">Registros por tanda</label><input id="tanda" type="number" min="1" max="500" value="50" style="width:100px"><label for="pausa">Pausa entre tandas (segundos)</label><input id="pausa" type="number" min="0" max="60" value="2" style="width:100px"><button id="detener" type="button" disabled>Detener próximas tandas</button></div><p class="hint">Mantené abierta esta página durante el envío. Detener no cancela los datos que ya recibió la impresora.</p><p class="hint">Se imprimen solo las filas con datos, en orden inverso por código (como los nombres de archivo anteriores). La impresión usa el puerto 9100.</p><div id="status" role="status" aria-live="polite"></div></section>
+<section class="card"><h2>4. Historial y reimpresión</h2><p class="hint">Cada trabajo conserva sus datos y el ZPL original, aunque cambie el diseño. Los números identifican registros; algunos diseños imprimen varias copias por registro.</p><div class="actions"><label for="trabajo">Trabajo guardado</label><select id="trabajo"><option>Sin trabajos</option></select><button id="actualizar" type="button">Actualizar</button></div><p id="detalle-trabajo" class="hint"></p><div class="toolbar"><button id="todos" type="button">Seleccionar todo</button><button id="ninguno" type="button">Quitar selección</button><label for="desde">Desde</label><input id="desde" type="number" min="1" value="1" style="width:90px"><label for="hasta">Hasta</label><input id="hasta" type="number" min="1" value="1" style="width:90px"><button id="rango" type="button">Seleccionar rango</button><span id="seleccionados"></span></div><div class="table-wrap"><table aria-label="Etiquetas guardadas"><thead><tr id="hist-cabecera"></tr></thead><tbody id="hist-filas"></tbody></table></div><div class="actions" style="margin-top:16px"><button class="submit" id="hist-descargar" type="button">Descargar selección</button><button class="primary submit" id="hist-imprimir" type="button">Reimprimir selección</button></div><div id="hist-status" role="status" aria-live="polite"></div></section>
+</main></body></html>

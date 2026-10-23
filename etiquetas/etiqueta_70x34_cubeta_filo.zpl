@@ -1,0 +1,23 @@
+﻿^XA
+-------- TEXTO NUMERICO --------
+
+^FT70,120
+^A0N,100,70
+^FDAZUL^FS
+
+^FT270,120
+^A0N,100,70
+^FD[CODBAR]^FS
+
+-------- BARCODE INTERLEAVED 2/5 --------
+^FT70,250
+^BY8,2,110
+
+^B2N,110,N,N,N
+^FD[CODBAR]^FS
+
+
+
+^PQ2
+
+^XZ
