@@ -25,7 +25,7 @@ function render() {
     if (!current) return;
     for (const title of ['#', ...current.variables, '']) { const th = document.createElement('th'); th.textContent = title; head.append(th); }
     for (let i = 0; i < 8; i++) addRow(); count();
-    message(current.variables.length ? 'Pegá los datos en el mismo orden que las columnas. CODBAR es obligatorio cuando aparece.' : 'Este diseño no tiene variables.');
+    message(current.variables.length ? 'Pegá los datos en el mismo orden que las columnas. CODBAR o CANAL, cuando aparecen, son obligatorios y no pueden repetirse.' : 'Este diseño no tiene variables.');
 }
 select.addEventListener('change', () => {
     const previous = current;

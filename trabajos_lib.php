@@ -2,7 +2,7 @@
 declare(strict_types=1);
 function ordenImpresion(array $job): array {
     $column = null;
-    foreach (['CODBAR', 'BARRAS', 'CODIGO', 'ALTERNATIVO'] as $candidate) {
+    foreach (['CODBAR', 'CANAL', 'BARRAS', 'CODIGO', 'ALTERNATIVO'] as $candidate) {
         foreach ($job['variables'] as $index => $variable) {
             if (strtoupper($variable) === $candidate) { $column = $index; break 2; }
         }

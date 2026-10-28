@@ -6,6 +6,8 @@ function catalogo(): array {
     $items = [];
     foreach (glob(__DIR__ . '/etiquetas/*.[zZ][pP][lL]') ?: [] as $path) {
         $zpl = file_get_contents($path);
+        // Algunos editores agregan una marca UTF-8 antes del primer comando ZPL.
+        if (strncmp($zpl, "\xEF\xBB\xBF", 3) === 0) { $zpl = substr($zpl, 3); }
         preg_match_all('/\[([A-Za-z_][A-Za-z0-9_]*)\]/', $zpl, $matches);
         $id = pathinfo($path, PATHINFO_FILENAME);
         $nombre = str_replace('_', ' ', $id);
@@ -39,13 +41,14 @@ try {
             $replace['[' . $variable . ']'] = $row[$col];
         }
         $barcodeVariable = null;
+        $barcodeName = null;
         foreach ($template['variables'] as $variable) {
-            if (strtoupper($variable) === 'CODBAR') { $barcodeVariable = '[' . $variable . ']'; }
+            if (in_array(strtoupper($variable), ['CODBAR', 'CANAL'], true)) { $barcodeVariable = '[' . $variable . ']'; $barcodeName = $variable; }
         }
         if ($barcodeVariable !== null) {
             $code = $replace[$barcodeVariable];
-            if (trim($code) === '') { throw new RuntimeException('Fila ' . ($index + 1) . ': falta CODBAR.'); }
-            if (isset($used[$code])) { throw new RuntimeException('Fila ' . ($index + 1) . ': CODBAR repetido.'); }
+            if (trim($code) === '') { throw new RuntimeException('Fila ' . ($index + 1) . ': falta ' . $barcodeName . '.'); }
+            if (isset($used[$code])) { throw new RuntimeException('Fila ' . ($index + 1) . ': ' . $barcodeName . ' repetido.'); }
             $used[$code] = true;
         }
         $labels[] = strtr($template['zpl'], $replace);
